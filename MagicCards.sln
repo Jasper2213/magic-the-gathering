@@ -1,0 +1,69 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32210.238
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{6E25D20E-8C10-485B-A1F3-69BD56805209}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web API", "Web API", "{6D368BFA-5FAE-415F-BC2D-DFCB60877B27}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web Application", "Web Application", "{AF5F59A0-76E6-4C33-9330-08AFFFDCACEF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MagicCards.DAL", "Magic.DAL\MagicCards.DAL.csproj", "{4747AF61-7859-4C63-8547-DBDC977CB8C2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MagicCards.WebAPI", "Magic.WebAPI\MagicCards.WebAPI.csproj", "{3880915A-D6F1-4983-BD1D-FAD4675E36DD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MagicCards.GraphQL", "MagicCards.GraphQL\MagicCards.GraphQL.csproj", "{5824B507-D9FB-4F50-B5F6-5AFB7E508EDF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MagicCards.MinimalAPI", "MagicCards.MinimalAPI\MagicCards.MinimalAPI.csproj", "{DA12EED2-5086-43FE-B1BA-E378D8BC2BA3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MagicCards.Shared", "MagicCards.Shared\MagicCards.Shared.csproj", "{BED395B9-088E-4BAF-9715-930E95BD76E8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MagicCards.Web", "MagicCards.Web\MagicCards.Web.csproj", "{F1917BFE-2A1F-445E-8773-BA6EEFB20C2A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4747AF61-7859-4C63-8547-DBDC977CB8C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4747AF61-7859-4C63-8547-DBDC977CB8C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4747AF61-7859-4C63-8547-DBDC977CB8C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4747AF61-7859-4C63-8547-DBDC977CB8C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3880915A-D6F1-4983-BD1D-FAD4675E36DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3880915A-D6F1-4983-BD1D-FAD4675E36DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3880915A-D6F1-4983-BD1D-FAD4675E36DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3880915A-D6F1-4983-BD1D-FAD4675E36DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5824B507-D9FB-4F50-B5F6-5AFB7E508EDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5824B507-D9FB-4F50-B5F6-5AFB7E508EDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5824B507-D9FB-4F50-B5F6-5AFB7E508EDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5824B507-D9FB-4F50-B5F6-5AFB7E508EDF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA12EED2-5086-43FE-B1BA-E378D8BC2BA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA12EED2-5086-43FE-B1BA-E378D8BC2BA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA12EED2-5086-43FE-B1BA-E378D8BC2BA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA12EED2-5086-43FE-B1BA-E378D8BC2BA3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BED395B9-088E-4BAF-9715-930E95BD76E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BED395B9-088E-4BAF-9715-930E95BD76E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BED395B9-088E-4BAF-9715-930E95BD76E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BED395B9-088E-4BAF-9715-930E95BD76E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1917BFE-2A1F-445E-8773-BA6EEFB20C2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1917BFE-2A1F-445E-8773-BA6EEFB20C2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1917BFE-2A1F-445E-8773-BA6EEFB20C2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1917BFE-2A1F-445E-8773-BA6EEFB20C2A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4747AF61-7859-4C63-8547-DBDC977CB8C2} = {6E25D20E-8C10-485B-A1F3-69BD56805209}
+		{3880915A-D6F1-4983-BD1D-FAD4675E36DD} = {6D368BFA-5FAE-415F-BC2D-DFCB60877B27}
+		{5824B507-D9FB-4F50-B5F6-5AFB7E508EDF} = {6D368BFA-5FAE-415F-BC2D-DFCB60877B27}
+		{DA12EED2-5086-43FE-B1BA-E378D8BC2BA3} = {6D368BFA-5FAE-415F-BC2D-DFCB60877B27}
+		{BED395B9-088E-4BAF-9715-930E95BD76E8} = {6E25D20E-8C10-485B-A1F3-69BD56805209}
+		{F1917BFE-2A1F-445E-8773-BA6EEFB20C2A} = {AF5F59A0-76E6-4C33-9330-08AFFFDCACEF}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {32ED5EE7-4D3C-4B3A-BBAA-F12997952615}
+	EndGlobalSection
+EndGlobal

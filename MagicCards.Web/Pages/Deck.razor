@@ -1,0 +1,85 @@
+﻿@inject IDeckRepository deckRepo
+@inject IMapper mapper
+@inject IHttpClientFactory httpClientFactory
+
+<div class="deck">
+    <div class="deckHeader">
+        <h3>Deck @cardsInDeck?.Sum(i => i.Quantity) / 60</h3>
+        <p title="Clear deck" @onmousedown="ClearDeck">❌</p>
+    </div>
+
+    @if (cardsInDeck != null)
+    {
+        @foreach (DeckItem item in cardsInDeck)
+        {
+            <div class="deckItem" title="Delete card from deck" >
+                <p @onclick="() => AddCardToDeck(item.Card)">@item.Quantity</p>
+                <div class="deckCardDetails" @onclick="() => RemoveCardFromDeck(item.Card)">
+                    <p>@item.Card.Name</p>
+                    <p>@item.Card.ManaCost</p>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+@code {
+    [Parameter]
+    public List<DeckItem> cardsInDeck { get; set; }
+
+    [Parameter]
+    public EventCallback<CardReadDTO> OnCardInDeckClicked { get; set; }
+
+    [Parameter]
+    public EventCallback<CardReadDTO> OnQuantityClicked { get; set; }
+
+    [Parameter]
+    public EventCallback<CardReadDTO> OnDeckClearClicked { get; set; }
+
+    private async void AddCardToDeck(CardReadDTO card)
+    {
+        HttpClient httpClient = httpClientFactory.CreateClient("DeckAPI");
+        HttpContent requestContent = JsonContent.Create(card);
+
+        HttpResponseMessage response = await httpClient.PostAsync("Card", requestContent);
+
+        if (response.IsSuccessStatusCode)
+        {
+            await OnQuantityClicked.InvokeAsync(card);
+        }
+    }
+
+    private async void RemoveCardFromDeck(CardReadDTO card)
+    {
+        HttpClient httpClient = httpClientFactory.CreateClient("DeckAPI");
+
+        HttpResponseMessage response = await httpClient.DeleteAsync($"Card?id={card.Id}");
+
+        if (response.IsSuccessStatusCode)
+        {
+            await HandleClick(card);
+        }
+    }
+
+    private async void ClearDeck()
+    {
+        HttpClient httpClient = httpClientFactory.CreateClient("DeckAPI");
+
+        HttpResponseMessage response = await httpClient.DeleteAsync($"Deck");
+
+        if (response.IsSuccessStatusCode)
+        {
+            await HandleDeckClear();
+        }
+    }
+
+    private async Task HandleClick(CardReadDTO card)
+    {
+        await OnCardInDeckClicked.InvokeAsync(card);
+    }
+
+    private async Task HandleDeckClear()
+    {
+        await OnDeckClearClicked.InvokeAsync();
+    }
+}

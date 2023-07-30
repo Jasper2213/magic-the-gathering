@@ -1,0 +1,82 @@
+﻿
+<form id="filters" @onsubmit="HandleSubmit" @onsubmit:preventDefault>
+    <div id="filtersContainer">
+        <div class="formItem">
+            <label for="cardSet">Set code:</label>
+            <input type="text" id="cardSet" placeholder="e.g. 10E" @bind="@filter.SetCode" />
+        </div>
+
+        <div class="formItem">
+            <label for="cardArtist">Artist:</label>
+            <input type="text" id="cardArtist" placeholder="e.g. Pete Venters" @bind="@filter.ArtistFullName" />
+        </div>
+
+        <div class="formItem">
+            <label for="cardRarity">Rarity:</label>
+            <input type="text" id="cardRarity" placeholder="e.g. Uncommon" @bind="filter.RarityName" />
+        </div>
+
+        <div class="formItem">
+            <label for="cardType">Type:</label>
+            <input type="text" id="cardType" placeholder="e.g. Creature" @bind="filter.Type" />
+        </div>
+
+        <div class="formItem">
+            <label for="cardName">Name:</label>
+            <input type="text" id="cardName" placeholder="e.g. Ancestor's Chosen" @bind="filter.Name" />
+        </div>
+
+        <div class="formItem">
+            <label for="cardText">Text:</label>
+            <input type="text" id="cardText" placeholder="e.g First strike" @bind="filter.Text" />
+        </div>
+
+        <div class="formItem">
+            <label for="orderName">Order Name </label>
+            <select id="orderName" @bind="filter.OrderName">
+                <option value="">Default</option>
+                <option value="asc">A - Z</option>
+                <option value="desc">Z - A</option>
+            </select>
+        </div>
+
+        <div class="formItem">
+            <label for="cardsPerPage">Cards per page:</label>
+            <select id="cardsPerPage" @bind="filter.PageSize">
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+                <option value="150">150</option>
+            </select>
+        </div>
+    </div>
+    <div class="formItem" id="formIcons" @onsubmit="HandleSubmit">
+        <p title="Clear filters" @onclick="ClearFilters">❌</p>
+        <input type="submit" value="@((submitted) ? "⏳" : "🔍")"  />
+    </div>
+</form>
+
+@code {
+    [Parameter]
+    public EventCallback<CardFilter> OnFiltersChanged { get; set; }
+
+    private CardFilter filter = new();
+
+    private bool submitted = false;
+
+    private async Task HandleSubmit()
+    {
+        submitted = true;
+
+        await OnFiltersChanged.InvokeAsync(filter);
+
+        submitted = false;
+    }
+
+    private async Task ClearFilters()
+    {
+        filter = new();
+        await OnFiltersChanged.InvokeAsync(filter);
+    }
+}

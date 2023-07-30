@@ -1,0 +1,27 @@
+﻿
+@if (Cards == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="cards">
+        @foreach(CardReadDTO card in Cards)
+        {
+            <CardItem card="@card" OnClick="@HandleCardClick"/>
+        }
+    </div>
+}
+
+@code {
+    [Parameter]
+    public IEnumerable<CardReadDTO> Cards { get; set; }
+
+    [Parameter]
+    public EventCallback<CardReadDTO> OnCardClick { get; set; }
+
+    private async Task HandleCardClick(CardReadDTO clickedCard)
+    {
+        await OnCardClick.InvokeAsync(clickedCard);
+    }
+}

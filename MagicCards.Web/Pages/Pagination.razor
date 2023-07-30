@@ -1,0 +1,32 @@
+@using MagicCards.Shared.Filters;
+
+<form id="pagination">
+    <div id="pageNumber">
+        <button @onclick="GoToPreviousPage" @onclick:preventDefault disabled="@(filter.PageNumber == 1)">PREV</button>
+        <p>@filter.PageNumber / @pageCount</p>
+        <button @onclick=GoToNextPage @onclick:preventDefault disabled="@(filter.PageNumber == pageCount)">NEXT</button>
+    </div>
+</form>
+
+@code {
+    [Parameter]
+    public CardFilter filter { get; set; }
+
+    [Parameter]
+    public int pageCount { get; set; }
+
+    [Parameter]
+    public EventCallback<CardFilter> OnPageDetailsChanged { get; set; }
+
+    private async Task GoToPreviousPage()
+    {
+        filter.PageNumber = --filter.PageNumber;
+        await OnPageDetailsChanged.InvokeAsync(filter);
+    }
+
+    private async Task GoToNextPage()
+    {
+        filter.PageNumber = ++filter.PageNumber;
+        await OnPageDetailsChanged.InvokeAsync(filter);
+    }
+}

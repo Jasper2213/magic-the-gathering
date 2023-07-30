@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="6.0.4" />
+    <PackageReference Include="StackExchange.Redis" Version="2.5.61" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Magic.DAL\MagicCards.DAL.csproj" />
+  </ItemGroup>
+
+	<ItemGroup>
+		<Using Include="MagicCards.Shared.DTO.Card" />
+		<Using Include="MagicCards.Shared.DTO.Artist" />
+		<Using Include="MagicCards.Shared.DTO.CardColor" />
+		<Using Include="MagicCards.Shared.DTO.Color" />
+		<Using Include="MagicCards.Shared.DTO.CardType" />
+		<Using Include="MagicCards.Shared.DTO.Type" />
+		<Using Include="MagicCards.Shared.DTO.Rarity" />
+		<Using Include="MagicCards.Shared.DTO.Set" />
+		<Using Include="AutoMapper" />
+		<Using Include="MagicCards.DAL.Models" />
+	</ItemGroup>
+
+</Project>

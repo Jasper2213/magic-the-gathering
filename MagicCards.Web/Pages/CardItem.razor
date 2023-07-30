@@ -1,0 +1,50 @@
+﻿@using MongoDB.Bson;
+@inject IDeckRepository deckRepo
+@inject IMapper mapper
+@inject IHttpClientFactory httpClientFactory
+
+<div class="card" @onmouseover="ShowCardDetails" @onmouseout="HideCardDetails">
+    <img @onmousedown="AddCardToDeck" 
+        src="@(card.OriginalImageUrl != null ? card.OriginalImageUrl : "default-card.jpg")" 
+        alt="@card.Name card" 
+        title="@card.Name" 
+    />
+    <div class="cardDetails" hidden="@(!showDetails)">
+        <p>@card.Name</p>
+        <p>@card.Type</p>
+        <p>Artist: @card.Artist.FullName</p>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public CardReadDTO card { get; set; }
+
+    [Parameter]
+    public EventCallback<CardReadDTO> OnClick { get; set; }
+
+    private bool showDetails = false;
+
+    private readonly JsonSerializerOptions jsonOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+
+    private void ShowCardDetails() => showDetails = true;
+    private void HideCardDetails() => showDetails = false;
+
+    private async void AddCardToDeck()
+    {
+        HttpClient httpClient = httpClientFactory.CreateClient("DeckAPI");
+        HttpContent requestContent = JsonContent.Create(card);
+
+        HttpResponseMessage response = await httpClient.PostAsync("Card", requestContent);
+
+        if (response.IsSuccessStatusCode)
+        {
+            await HandleClick();
+        }
+    }
+
+    private async Task HandleClick()
+    {
+        await OnClick.InvokeAsync(card);
+    }
+}

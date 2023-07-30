@@ -1,0 +1,148 @@
+﻿@page "/"
+
+@inject ICardRepository cardRepo
+@inject IMapper mapper
+@inject IHttpClientFactory httpClientFactory
+
+<PageTitle>MTG - Howest</PageTitle>
+
+<Filters OnFiltersChanged="HandleFiltersChanged"></Filters>
+<div class="content">
+    <CardsList Cards="@cards" OnCardClick="@AddCardToDeck"></CardsList>
+    <Deck cardsInDeck="@cardsInDeck" OnCardInDeckClicked="RemoveCardFromDeck" OnDeckClearClicked="ClearDeck" OnQuantityClicked="AddCardToDeck" />
+</div>
+<Pagination filter="@filter" pageCount="@pageCount" OnPageDetailsChanged="HandleFiltersChanged"></Pagination>
+
+@code
+{
+    private string message = string.Empty;
+
+    private IEnumerable<CardReadDTO> cards = null;
+    private List<DeckItem> cardsInDeck = null;
+
+    private readonly JsonSerializerOptions jsonOptions = new JsonSerializerOptions {PropertyNameCaseInsensitive = true};
+
+    private int pageCount;
+
+    private CardFilter filter;
+
+    private async void HandleFiltersChanged(CardFilter cardFilter)
+    {
+        filter = cardFilter;
+
+        await GetAllCards();
+
+        StateHasChanged();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        filter = new();
+
+        await GetAllCards();
+        await GetAllCardsInDeck();
+    }
+
+    private async Task GetAllCards()
+    {
+        HttpClient httpClient = httpClientFactory.CreateClient("CardsAPI");
+
+        HttpResponseMessage response = await httpClient.GetAsync(GetApiUrl());
+
+        string apiResponse = await response.Content.ReadAsStringAsync();
+
+        if (response.IsSuccessStatusCode)
+        {
+            PagedResponse<IEnumerable<CardReadDTO>> result =
+            JsonSerializer.Deserialize<PagedResponse<IEnumerable<CardReadDTO>>>(apiResponse, jsonOptions);
+
+            cards = result.Data;
+            pageCount = result.TotalPages;
+        }
+        else
+        {
+            cards = new List<CardReadDTO>();
+            message = $"Error: {response.ReasonPhrase}";
+        }
+    }
+
+    private string GetApiUrl()
+    {
+        string apiUrl = "v1.5/Cards?";
+
+        if (!string.IsNullOrEmpty(filter.PageNumber.ToString()))
+            apiUrl += $"pageNumber={filter.PageNumber}&";
+
+        if (!string.IsNullOrEmpty(filter.PageSize.ToString()))
+            apiUrl += $"pageSize={filter.PageSize}&";
+
+        if (!string.IsNullOrEmpty(filter.Type))
+            apiUrl += $"Type={filter.Type}&";
+
+        if (!string.IsNullOrEmpty(filter.Name))
+            apiUrl += $"Name={filter.Name}&";
+
+        if (!string.IsNullOrEmpty(filter.Text))
+            apiUrl += $"Text={filter.Text}&";
+
+        if (!string.IsNullOrEmpty(filter.ArtistFullName))
+            apiUrl += $"ArtistFullName={filter.ArtistFullName}&";
+
+        if (!string.IsNullOrEmpty(filter.RarityName))
+            apiUrl += $"RarityName={filter.RarityName}&";
+
+        if (!string.IsNullOrEmpty(filter.SetCode))
+            apiUrl += $"SetCode={filter.SetCode}";
+
+        if (!string.IsNullOrEmpty(filter.OrderName))
+            apiUrl += $"OrderName={filter.OrderName}";
+
+        return apiUrl;
+    }
+
+    private async Task GetAllCardsInDeck()
+    {
+        HttpClient httpClient = httpClientFactory.CreateClient("DeckAPI");
+
+        HttpResponseMessage response = await httpClient.GetAsync("cards");
+
+        string apiResponse = await response.Content.ReadAsStringAsync();
+
+        if (response.IsSuccessStatusCode)
+        {
+            List<DeckItem> result =
+                JsonSerializer.Deserialize<List<DeckItem>>(apiResponse, jsonOptions);
+
+            cardsInDeck = result;
+        }
+    }
+
+    // Add Card to Deck
+    private void AddCardToDeck(CardReadDTO clickedCard)
+    {
+        if (cardsInDeck.Sum(i => i.Quantity) < 60)
+        {
+            DeckItem item = cardsInDeck.Find(c => c.Card.Id == clickedCard.Id);
+
+            if (item == null)
+                cardsInDeck.Add(new DeckItem() { Card = clickedCard });
+            else
+                item.Quantity++;
+        }
+    }
+
+    private void RemoveCardFromDeck(CardReadDTO clickedCard)
+    {
+        DeckItem item = cardsInDeck.Find(c => c.Card.Id == clickedCard.Id);
+
+        if (item.Quantity > 1)
+            item.Quantity--;
+        else
+            cardsInDeck.Remove(item);
+    }
+
+    private void ClearDeck()
+    {
+        cardsInDeck.Clear();
+    }
+}
